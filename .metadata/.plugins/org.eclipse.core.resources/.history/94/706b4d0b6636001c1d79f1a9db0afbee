@@ -1,0 +1,36 @@
+package com.cruds.db;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.cruds.book.Book;
+
+public class BookDAO 
+{
+	public boolean create(Book book)
+	{
+		String sql = "insert into book(isbn,title,category,noofbooks) values(?,?,?,?)";
+		String sql2 = "insert into author(authorname,mailid,isbn) values(?,?,?)"; 
+		
+		int rows = 0, rows1 = 0;
+		
+		try(Connection conn = DBConnectionManager.getConnection())
+		{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, book.getIsbn());
+			ps.setString(2, book.getTitle());
+			ps.setString(3, book.getCategory());
+			ps.setInt(4, book.getNo_of_books());
+			
+			rows = ps.executeUpdate();
+			
+			PreparedStatement ps2 = conn.prepareStatement(sql2);
+			//ps2.setString(1, book);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
